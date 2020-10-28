@@ -234,7 +234,7 @@
 <li>在运行Java程序时，类加载器会首先加载和初始化这个Car类，形成一个 Car class 的抽象模板（每个类的模板只有一个）</li>
 <li>这些加载器提取出来的Class对象是存放在方法区的</li>
 <li>当程序中执行<code>Car car1 = new Car()</code>这样的语句时</li>
-<li><code>car1</code>作为引用名存储在栈当中，而<code>new</code>出来的实例对象是存储在堆区的<br><img src="D:/Work/GitHub/blog/source/JVM_md_files/image_20200713154355.png" srcset="/img/loading.gif"></li>
+<li><code>car1</code>作为引用名存储在栈当中，而<code>new</code>出来的实例对象是存储在堆区的<br><img src="image_20200713154355.png" srcset="/img/loading.gif"></li>
 </ul>
 <h3 id="加载器："><a href="#加载器：" class="headerlink" title="加载器："></a>加载器：</h3><ul>
 <li>虚拟机自带的加载器</li>
@@ -285,7 +285,7 @@
 <h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><ul>
 <li>所有线程共享的区域，所有定义的方法的信息都保存在该区域</li>
 <li>静态变量、常量、类信息（静态方法、构造方法、接口定义）、运行时的常量池都存在方法区当中</li>
-<li>实例变量存在堆内存中，和方法区无关<br><img src="D:/Work/GitHub/blog/source/JVM_md_files/image_20200713174306.png" srcset="/img/loading.gif"></li>
+<li>实例变量存在堆内存中，和方法区无关<br><img src="image_20200713174306.png" srcset="/img/loading.gif"></li>
 </ul>
 <h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><ul>
 <li>存放8大基本类型和对象引用</li>
