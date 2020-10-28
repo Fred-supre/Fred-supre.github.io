@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/02.jpg">
+  <link rel="icon" type="image/png" href="/img/02.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Lluvia">
+  <meta name="keywords" content="">
+  <title>JUC并发编程 - Lluvia</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Lluvia</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/17.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-22 21:09" pubdate>
+        2020年10月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      38
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">JUC并发编程</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="JUC并发编程"><a href="#JUC并发编程" class="headerlink" title="JUC并发编程"></a>JUC并发编程</h1><ul>
+<li>就是Java工具包中的三个包<ul>
+<li><code>java.util.concurrent</code></li>
+<li><code>java.util.concurrent.atomic</code></li>
+<li><code>java.util.concurrent.locks</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="进程-线程"><a href="#进程-线程" class="headerlink" title="进程/线程"></a>进程/线程</h2><ul>
+<li>Java默认有两个线程：<code>main</code> &amp; <code>GC</code></li>
+<li>Java是无法直接开启线程的，需要通过<code>native</code>调用本地方法（底层C++）</li>
+<li>并发编程本质：<strong>充分利用CPU资源</strong><h3 id="代码查看CPU核"><a href="#代码查看CPU核" class="headerlink" title="代码查看CPU核"></a>代码查看CPU核</h3></li>
+<li><code>Runtime.getRuntime().availableProcessors()</code></li>
+<li>CPU密集型</li>
+<li>IO密集型<h3 id="线程状态"><a href="#线程状态" class="headerlink" title="线程状态"></a>线程状态</h3><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">State</span> </span>&#123;  
+  <span class="hljs-comment">// 新生</span>
+  NEW, 
+   
+  <span class="hljs-comment">// 运行</span>
+  RUNNABLE,  
+  
+  <span class="hljs-comment">// 阻塞</span>
+  BLOCKED,  
+  
+  <span class="hljs-comment">// 死等</span>
+  WAITING,  
+  
+  <span class="hljs-comment">// 超时等待</span>
+  TIMED_WAITING,  
+  
+  <span class="hljs-comment">// 终止</span>
+  TERMINATED;  
+&#125;</code></pre>
+<h3 id="wait-sleep区别"><a href="#wait-sleep区别" class="headerlink" title="wait/sleep区别"></a><code>wait/sleep</code>区别</h3></li>
+</ul>
+<ol>
+<li>来源不同的类<ul>
+<li><code>wait</code> =&gt; <code>Object</code></li>
+<li><code>sleep</code> =&gt; <code>Thread</code></li>
+</ul>
+</li>
+<li>锁的释放<ul>
+<li><code>wait</code>会释放锁</li>
+<li><code>sleep</code>不释放锁</li>
+</ul>
+</li>
+<li>使用范围不同<ul>
+<li><code>wait</code>必须在同步代码块中</li>
+<li><code>sleep</code>可以在任何地方使用</li>
+</ul>
+</li>
+<li>捕获异常<ul>
+<li><code>wait</code>不需要捕获异常</li>
+<li><code>sleep</code>需要捕获异常</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>使用<code>TimeUnit</code>类，如：<code>TimeUnit.SECONDS.sleep(12);</code><h2 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h2><h3 id="传统Synchronized"><a href="#传统Synchronized" class="headerlink" title="传统Synchronized"></a>传统Synchronized</h3></li>
+<li>同步方法</li>
+<li>同步代码块</li>
+</ul>
+<h3 id="使用Lock锁"><a href="#使用Lock锁" class="headerlink" title="使用Lock锁"></a>使用Lock锁</h3><ul>
+<li>在<code>java.util.concurrent.locks</code>包中</li>
+<li>拥有三个实现类：<ul>
+<li><code>ReentrantLock</code> ：可重入锁（常用）</li>
+<li><code>ReadLock</code> ：读锁</li>
+<li><code>WriteLock</code> ：写锁</li>
+</ul>
+</li>
+<li>new一个<code>ReentrantLock</code>锁时，可以选则公平锁/非公平锁<ul>
+<li>不传参默认生成非公平锁<code>Lock lock = new ReentrantLock();</code></li>
+<li>传参true：公平锁</li>
+<li>传参false：非公平锁</li>
+</ul>
+</li>
+<li>在<code>lock.lock()</code>/<code>lock.tryLock()</code> &amp; <code>lock.unlock()</code>之间定义加锁大的代码块</li>
+</ul>
+<h3 id="Synchronized-amp-Lock的区别"><a href="#Synchronized-amp-Lock的区别" class="headerlink" title="Synchronized &amp; Lock的区别"></a><code>Synchronized</code> &amp; <code>Lock</code>的区别</h3><ul>
+<li>前者是Java内置关键字；后者是一个类</li>
+<li>前者无法判断获取锁的状态；后者可以</li>
+<li>前者在运行结束后自动释放；后者需要手动完成</li>
+<li>前者是固定的模式（可重入、不可中断、非公平）</li>
+<li>前者适合少量的代码同步问题，后者适合大量的代码同步问题</li>
+</ul>
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h3 id="传统版"><a href="#传统版" class="headerlink" title="传统版"></a>传统版</h3><ul>
+<li>在传统线程的通讯过程中，使用<code>synchronized</code>关键字配合<code>this.wait() &amp; this.notify/notifyAll()</code>这两个方法</li>
+<li>使用过程中，当需要通过条件判断来决定是否进入<code>wait()</code>时，不要使用if语句来进行判断</li>
+<li>这样会出现<strong>虚假唤醒</strong>的情况，即被唤醒之后依然不具备退出<code>wait()</code>的条件</li>
+<li>所以要使用while语句来进行条件的判断，例如：<pre><code class="hljs java"><span class="hljs-keyword">synchronized</span> (obj) &#123;
+	<span class="hljs-keyword">while</span> (&lt;condition&gt;)
+		obj.wait();
+		
+	...<span class="hljs-comment">//TODO</span>
+	obj.notifyAll();
+&#125;</code></pre>
+<h3 id="JUC版"><a href="#JUC版" class="headerlink" title="JUC版"></a>JUC版</h3></li>
+<li>在这个系列中，使用Lock对象来对代码进行互斥访问；配合<code>await() &amp; signal()</code>实现同步</li>
+<li>首先生成一个条件<code>Condition condition = lock.newCondition();</code></li>
+<li>然后调用同步方法<code>condition.await() &amp; condition.signalAll()</code><blockquote>
+<p>使用Condition可以实现更加精准的同步问题</p>
+</blockquote>
+</li>
+<li>对于同一个锁lock，可以同时生成多个condition</li>
+<li>对于每一个单独的condition可以单独的进行<code>await() &amp; signal()</code>，以此实现精准控制<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Data2</span> </span>&#123;  
+    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();  
+ <span class="hljs-keyword">private</span> Condition condition1 = lock.newCondition();  
+ <span class="hljs-keyword">private</span> Condition condition2 = lock.newCondition();  
+ <span class="hljs-keyword">private</span> Condition condition3 = lock.newCondition();  
+  
+ <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> number = <span class="hljs-number">1</span>;  
+  
+ <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printA</span><span class="hljs-params">()</span> </span>&#123;  
+        lock.lock();  
+ <span class="hljs-keyword">try</span> &#123;  
+            <span class="hljs-keyword">while</span> (number != <span class="hljs-number">1</span>)  
+                condition1.await();  
+  System.out.println(Thread.currentThread().getName());  
+  number = <span class="hljs-number">2</span>;  
+  condition2.signal();  
+  &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;  
+            e.printStackTrace();  
+  &#125; <span class="hljs-keyword">finally</span> &#123;  
+            lock.unlock();  
+  &#125;  
+    &#125;;  
+ <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printB</span><span class="hljs-params">()</span> </span>&#123;  
+        lock.lock();  
+ <span class="hljs-keyword">try</span> &#123;  
+            <span class="hljs-keyword">while</span> (number != <span class="hljs-number">2</span>)  
+                condition2.await();  
+  System.out.println(Thread.currentThread().getName());  
+  number = <span class="hljs-number">3</span>;  
+  condition3.signal();  
+  &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;  
+            e.printStackTrace();  
+  &#125; <span class="hljs-keyword">finally</span> &#123;  
+            lock.unlock();  
+  &#125;  
+    &#125;;  
+ <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printC</span><span class="hljs-params">()</span> </span>&#123;  
+        lock.lock();  
+ <span class="hljs-keyword">try</span> &#123;  
+            <span class="hljs-keyword">while</span> (number != <span class="hljs-number">3</span>)  
+                condition3.await();  
+  System.out.println(Thread.currentThread().getName());  
+  number = <span class="hljs-number">1</span>;  
+  condition1.signal();  
+  &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;  
+            e.printStackTrace();  
+  &#125; <span class="hljs-keyword">finally</span> &#123;  
+            lock.unlock();  
+  &#125;  
+    &#125;;  
+&#125;</code></pre>
+
+</li>
+</ul>
+<h2 id="深入理解锁"><a href="#深入理解锁" class="headerlink" title="深入理解锁"></a>深入理解锁</h2><h3 id="1-synchronized锁的对象是方法的调用者"><a href="#1-synchronized锁的对象是方法的调用者" class="headerlink" title="1. synchronized锁的对象是方法的调用者"></a>1. <code>synchronized</code>锁的对象是方法的调用者</h3><ul>
+<li>针对于被<code>synchronized</code>修饰的方法调用场景</li>
+<li>被锁住的是调用该方法的实例对象（每个实例对象都有一个内部锁🔒）</li>
+<li>对于那些没有<code>synchronized</code>修饰的方法，则不会受到锁的限制，任意调用</li>
+<li>对于两个实例对象，对两个对象分别调用有锁的方法时，相互之间是不影响的（因为锁的是不同的对象）<h3 id="2-static-amp-synchronized-同时修饰的方法锁的是Class"><a href="#2-static-amp-synchronized-同时修饰的方法锁的是Class" class="headerlink" title="2. static &amp; synchronized 同时修饰的方法锁的是Class"></a>2. <code>static</code> &amp; <code>synchronized</code> 同时修饰的方法锁的是Class</h3></li>
+<li>静态的方法在上锁时，是对这个类的Class进行加锁的</li>
+<li>所以在调用同类不同对象的静态有锁方法时，相互之间会受影响</li>
+</ul>
+<h2 id="集合类不安全"><a href="#集合类不安全" class="headerlink" title="集合类不安全"></a>集合类不安全</h2><ul>
+<li>并发操作集合时，会出现<code>ConcurrentModificationException</code> ==并发修改异常==<h3 id="List类不安全"><a href="#List类不安全" class="headerlink" title="List类不安全"></a>List类不安全</h3><h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4></li>
+</ul>
+<ol>
+<li>使用Vector代替ArrayList，Vector默认就是多线程安全的集合</li>
+<li>JDK提供了将非安全集合转换为安全集合的方法<code>List&lt;String&gt; list = Collections.synchronizedList(new ArrayList&lt;&gt;());</code></li>
+<li>JUC有单独的多线程安全集合实现：<code>List&lt;String&gt; list = new CopyOnWriteArrayList&lt;&gt;();</code></li>
+</ol>
+<h4 id="COW-写入时复制"><a href="#COW-写入时复制" class="headerlink" title="COW 写入时复制"></a>COW 写入时复制</h4><ul>
+<li>CopyOnWrite 技术是计算机程序设计领域的一种优化策略</li>
+<li>当多个线程同时调用一个List对其进行写入时，先复制一份给调用者进行写入，再回传给List</li>
+<li>这样来避免在写入时覆盖的问题</li>
+<li>==读写分离==</li>
+<li>COW技术比Vector这样的使用synchronized的方法更加高效</li>
+</ul>
+<h3 id="Set类不安全"><a href="#Set类不安全" class="headerlink" title="Set类不安全"></a>Set类不安全</h3><ul>
+<li>和List的实现方式类似<h4 id="解决办法-1"><a href="#解决办法-1" class="headerlink" title="解决办法"></a>解决办法</h4></li>
+</ul>
+<ol>
+<li>JDK提供的安全类转换接口<code>Set&lt;String&gt; ser = Collections.synchronizedSet(new HashSet&lt;&gt;());</code></li>
+<li>JUC提供的多线程安全结合实现：<code>Set&lt;String&gt; ser = new CopyOnWriteArraySet&lt;&gt;();</code><h4 id="HashSet的底层实现"><a href="#HashSet的底层实现" class="headerlink" title="HashSet的底层实现"></a>HashSet的底层实现</h4></li>
+</ol>
+<ul>
+<li>HashSet底层是用HashMap实现的，利用了Map的key不重复的特点</li>
+<li>对于HashSet的很多方法也是直接调用了HashMap的方法来进行的</li>
+</ul>
+<h3 id="Map类不安全"><a href="#Map类不安全" class="headerlink" title="Map类不安全"></a>Map类不安全</h3><h4 id="解决办法-2"><a href="#解决办法-2" class="headerlink" title="解决办法"></a>解决办法</h4><ol>
+<li>JDK提供的安全类转换接口<code>Map&lt;String,String&gt; map = Collections.synchronizedMap(new HashMap&lt;&gt;());</code></li>
+<li>JUC提供的多线程安全结合实现：<code>Map&lt;String,String&gt; map = new ConcurrentHashMap&lt;&gt;();</code></li>
+</ol>
+<h2 id="Callable"><a href="#Callable" class="headerlink" title="Callable"></a>Callable</h2><ul>
+<li>和Runnable接口是类似的，不过多了返回值的功能</li>
+<li>不能直接由Thread调用这个函数式接口，而需要一个中间类<pre><code class="hljs java">FutureTask futureTask = <span class="hljs-keyword">new</span> FutureTask(<span class="hljs-keyword">new</span> MyThread());  
+<span class="hljs-keyword">new</span> Thread(futureTask).start();  
+String str = (String) futureTask.get();</code></pre></li>
+<li>注意：<ul>
+<li>有缓存</li>
+<li>结果获得可能需要等待，<code>get()</code>方法会阻塞</li>
+</ul>
+</li>
+</ul>
+<h2 id="常用辅助类"><a href="#常用辅助类" class="headerlink" title="常用辅助类"></a>常用辅助类</h2><h3 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h3><ul>
+<li>一个或多个线程等待直到在其他线程中执行的一组操作完成的同步辅助</li>
+<li><code>CountDownLatch countDownLatch = new CountDownLatch(6);</code></li>
+<li><code>countDownLatch.countDown()</code> 数量 -1</li>
+<li><code>countDownLatch.await()</code> 一直阻塞到数字减为0再重新开始执行</li>
+<li>特点：一个线程发生阻塞，等到多个线程执行完成之后再执行<h3 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h3></li>
+<li>一组线程全部等待彼此达到==共同屏障==点的同步辅助</li>
+<li><code>CyclicBarrier cyclicBarrier = new CyclicBarrier(6,()-&gt;&#123;System.out.println(&quot;close&quot;);&#125;);</code></li>
+<li><code>cyclicBarrier.await();</code></li>
+<li>特点：多个线程发生阻塞之后，等待CyclicBarrier指定的线程进行执行之后再执行<h3 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h3></li>
+<li>信号量</li>
+<li><code>Semaphore semaphore = new Semaphore(3);</code> </li>
+<li><code>semaphore.acquire();</code> 获取一个资源，没有时会阻塞等待</li>
+<li><code>semaphore.release();</code> 释放一个资源，唤醒阻塞的线程</li>
+<li>限制资源使用的方法</li>
+</ul>
+<h2 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h2><ul>
+<li><code>ReadWriteLock</code> 接口</li>
+<li><code>ReentrantReadWriteLock</code> 是其唯一实现类</li>
+<li>这个类中有两个锁，分别用于读写</li>
+<li>读写锁保证可以让多个线程同时读出，但是只能允许一个线程同时写入</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>读锁</th>
+<th>写锁</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>共享锁</td>
+<td>独占锁</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>ReadWriteLock lock = new ReentrantReadWriteLock()</code></li>
+<li><code>lock.readLock().lock()</code></li>
+<li><code>lock.readLock().unlock()</code></li>
+<li><code>lock.writeLock().lock()</code></li>
+<li><code>lock.writeLock().unlock()</code> </li>
+</ul>
+<h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><ul>
+<li><code>BlockingQueue</code>接口 </li>
+<li>实现类：<code>ArrayBlockingQueue</code> <code>LinkedBlockingQueue</code> (这两个用法相似) ；<code>SynchronousQueue</code> (这个实现类的队列空间只有一个)</li>
+<li><code>ArrayBlockingQueue&lt;String&gt; blockingQueue = new ArrayBlockingQueue&lt;&gt;(3);</code><h4 id="四组API"><a href="#四组API" class="headerlink" title="四组API"></a>四组API</h4></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>抛出异常</th>
+<th>返回值，不抛出异常</th>
+<th>阻塞等待</th>
+<th>超时等待</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>添加</td>
+<td>add</td>
+<td>offer</td>
+<td>put</td>
+<td>offer</td>
+</tr>
+<tr>
+<td>移除</td>
+<td>remove</td>
+<td>poll</td>
+<td>take</td>
+<td>poll</td>
+</tr>
+<tr>
+<td>检测队首</td>
+<td>element</td>
+<td>peek</td>
+<td>/</td>
+<td>/</td>
+</tr>
+</tbody></table>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p><strong>三大方法、七大参数、四种拒绝策略</strong></p>
+<blockquote>
+<p>池化技术：对系统资源使用的优化 </p>
+</blockquote>
+<ul>
+<li>线程池、连接池、内存池、对象池</li>
+<li>事先准备好一些资源，要用就从池中获取，用完之后再归还。</li>
+<li>减少资源使用过程中的浪费，资源的创建、销毁都很耗时<h3 id="线程池的好处"><a href="#线程池的好处" class="headerlink" title="线程池的好处"></a>线程池的好处</h3></li>
+</ul>
+<ol>
+<li>线程复用，降低资源消耗提高相应速度</li>
+<li>可控最大并发数</li>
+<li>方便管理线程<h3 id="三大创建线程池的方法"><a href="#三大创建线程池的方法" class="headerlink" title="三大创建线程池的方法"></a>三大创建线程池的方法</h3><pre><code class="hljs java">ExecutorService threadPool = Executors.newSingleThreadExecutor(); <span class="hljs-comment">// 单个线程池  </span>
+ExecutorService threadPool = Executors.newFixedThreadPool(<span class="hljs-number">5</span>); <span class="hljs-comment">// 创建固定大小的线程池  </span>
+ExecutorService threadPool = Executors.newCachedThreadPool(); <span class="hljs-comment">// 大小可伸缩的线程池</span></code></pre>
+<h3 id="七大参数"><a href="#七大参数" class="headerlink" title="七大参数"></a>七大参数</h3></li>
+</ol>
+<ul>
+<li>在使用三大方法创建线程池时，其底层都调用了同一个函数<code>ThreadPoolExecutor()</code></li>
+<li>这个底层调用的函数拥有7个参数<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ThreadPoolExecutor</span><span class="hljs-params">(<span class="hljs-keyword">int</span> corePoolSize,  					// 核心线程池大小</span></span>
+<span class="hljs-function"><span class="hljs-params">						  <span class="hljs-keyword">int</span> maximumPoolSize,  				//最大核心线程池大小</span></span>
+<span class="hljs-function"><span class="hljs-params">						  <span class="hljs-keyword">long</span> keepAliveTime,  					//超时没有人调用就会释放</span></span>
+<span class="hljs-function"><span class="hljs-params">						  TimeUnit unit,  						//超时单位</span></span>
+<span class="hljs-function"><span class="hljs-params">						  BlockingQueue&lt;Runnable&gt; workQueue,  	//阻塞队列</span></span>
+<span class="hljs-function"><span class="hljs-params">						  ThreadFactory threadFactory,  		//线程工厂</span></span>
+<span class="hljs-function"><span class="hljs-params">						  RejectedExecutionHandler handler)</span> </span>&#123;  	<span class="hljs-comment">//拒接策略</span>
+	<span class="hljs-keyword">if</span> (corePoolSize &lt; <span class="hljs-number">0</span> ||  
+	    maximumPoolSize &lt;= <span class="hljs-number">0</span> ||  
+	    maximumPoolSize &lt; corePoolSize ||  
+	    keepAliveTime &lt; <span class="hljs-number">0</span>)  
+	    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException();  
+	 <span class="hljs-keyword">if</span> (workQueue == <span class="hljs-keyword">null</span> || threadFactory == <span class="hljs-keyword">null</span> || handler == <span class="hljs-keyword">null</span>)  
+	        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NullPointerException();  
+	 <span class="hljs-keyword">this</span>.acc = System.getSecurityManager() == <span class="hljs-keyword">null</span> ?  
+	            <span class="hljs-keyword">null</span> :  
+	            AccessController.getContext();  
+	 <span class="hljs-keyword">this</span>.corePoolSize = corePoolSize;  
+	 <span class="hljs-keyword">this</span>.maximumPoolSize = maximumPoolSize;  
+	 <span class="hljs-keyword">this</span>.workQueue = workQueue;  
+	 <span class="hljs-keyword">this</span>.keepAliveTime = unit.toNanos(keepAliveTime);  
+	 <span class="hljs-keyword">this</span>.threadFactory = threadFactory;  
+	 <span class="hljs-keyword">this</span>.handler = handler;  
+&#125;</code></pre>
+<img src="JUC%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B_md_files/image_20200725232042.png?v=1&type=image&token=V1:WnYfHTlcN6Frl_kJAa9jk3RDDzt_p3_IY8pnUYTqUXE" srcset="/img/loading.gif"></li>
+<li>手动调用底层函数创建线程池举例<pre><code class="hljs java">ExecutorService threadPool = <span class="hljs-keyword">new</span> ThreadPoolExecutor(  
+		<span class="hljs-number">2</span>,  
+		<span class="hljs-number">5</span>,  
+		<span class="hljs-number">2</span>,  
+		TimeUnit.SECONDS,  
+		<span class="hljs-keyword">new</span> ArrayBlockingQueue&lt;&gt;(<span class="hljs-number">3</span>),  
+		Executors.defaultThreadFactory(),  
+		<span class="hljs-keyword">new</span> ThreadPoolExecutor.AbortPolicy());</code></pre>
+<h3 id="四种拒绝策略"><a href="#四种拒绝策略" class="headerlink" title="四种拒绝策略"></a>四种拒绝策略</h3></li>
+<li>对应<code>RejectedExecutionHandler</code>接口的四个实现类</li>
+</ul>
+<ol>
+<li><code>new ThreadPoolExecutor.AbortPolicy()</code> 队列溢出时，不处理这个任务并抛出异常</li>
+<li><code>new ThreadPoolExecutor.CallerRunsPolicy()</code> 哪来的去哪里，让原线程去执行这个线程</li>
+<li><code>new ThreadPoolExecutor.DiscardOldestPolicy()</code> 会尝试去竞争最早的线程，如果没有执行完成，依然会被抛掉</li>
+<li><code>new ThreadPoolExecutor.DiscardPolicy()</code> 不执行这个任务，但不抛出异常</li>
+</ol>
+<h3 id="最大线程数定义办法"><a href="#最大线程数定义办法" class="headerlink" title="最大线程数定义办法"></a>最大线程数定义办法</h3><h4 id="CPU密集型"><a href="#CPU密集型" class="headerlink" title="CPU密集型"></a>CPU密集型</h4><ul>
+<li>最大核心数定义为：<code>Runtime.getRuntime().availableProcessors()</code><h4 id="I-O-密集型"><a href="#I-O-密集型" class="headerlink" title="I/O 密集型"></a>I/O 密集型</h4></li>
+<li>判断程序中十分耗I/O的线程数量，然后取 2N</li>
+</ul>
+<h2 id="⭐四大函数式接口"><a href="#⭐四大函数式接口" class="headerlink" title="⭐四大函数式接口"></a>⭐四大函数式接口</h2><blockquote>
+<p>新时代Java技术：lambda表达式、链式编程、函数式接口、Stream流式计算</p>
+</blockquote>
+<h3 id="1-Function"><a href="#1-Function" class="headerlink" title="1. Function"></a>1. <code>Function</code></h3><ul>
+<li>有输入参数和返回值<pre><code class="hljs java"><span class="hljs-meta">@FunctionalInterface</span>  
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Function</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">R</span>&gt; </span>&#123;  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment"> * Applies this function to the given argument. * * <span class="hljs-doctag">@param</span> t the function argument  </span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span> the function result  </span>
+<span class="hljs-comment"> */</span>  <span class="hljs-function">R <span class="hljs-title">apply</span><span class="hljs-params">(T t)</span></span>;</code></pre>
+<h3 id="2-Predicate"><a href="#2-Predicate" class="headerlink" title="2. Predicate"></a>2. <code>Predicate</code></h3></li>
+<li>有输入输出参数，但是输出参数类型指定为<code>boolean</code><pre><code class="hljs java"><span class="hljs-meta">@FunctionalInterface</span>  
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Predicate</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment"> * Evaluates this predicate on the given argument. * * <span class="hljs-doctag">@param</span> t the input argument  </span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@code</span> true&#125; if the input argument matches the predicate,  </span>
+<span class="hljs-comment"> * otherwise &#123;<span class="hljs-doctag">@code</span> false&#125;  </span>
+<span class="hljs-comment"> */</span>  <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">test</span><span class="hljs-params">(T t)</span></span>;</code></pre>
+<h3 id="3-Consumer"><a href="#3-Consumer" class="headerlink" title="3. Consumer"></a>3. <code>Consumer</code></h3>只有一个输入参数，没有输出参数<pre><code class="hljs java"><span class="hljs-meta">@FunctionalInterface</span>  
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Consumer</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment"> * Performs this operation on the given argument. * * <span class="hljs-doctag">@param</span> t the input argument  </span>
+<span class="hljs-comment"> */</span>  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(T t)</span></span>;</code></pre>
+<h3 id="4-Supplier"><a href="#4-Supplier" class="headerlink" title="4. Supplier"></a>4. <code>Supplier</code></h3></li>
+<li>只有一个输出参数而没有输入参数<pre><code class="hljs java"><span class="hljs-meta">@FunctionalInterface</span>  
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Supplier</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment"> * Gets a result. * * <span class="hljs-doctag">@return</span> a result  </span>
+<span class="hljs-comment"> */</span>  <span class="hljs-function">T <span class="hljs-title">get</span><span class="hljs-params">()</span></span>;  
+&#125;</code></pre>
+
+</li>
+</ul>
+<h2 id="Stream流式计算"><a href="#Stream流式计算" class="headerlink" title="Stream流式计算"></a>Stream流式计算</h2><ul>
+<li>Stream是操作集合的一种计算工具，它大大提高了编程、计算的效率</li>
+<li>程序可以拆分为：存储数据的集合 与 进行计算的流</li>
+<li>一个集合所形成的流在运算中只会遍历一次</li>
+<li>在流水线中，一旦一个元素走完了流水线，那么这个元素就被“消费”掉了不能再对这个流进行操作</li>
+<li>流处理的方式是采用内部迭代，手动处理集合的则是外部迭代<h3 id="流的操作种类"><a href="#流的操作种类" class="headerlink" title="流的操作种类"></a>流的操作种类</h3><h4 id="1-中间操作-Intermediate"><a href="#1-中间操作-Intermediate" class="headerlink" title="1. 中间操作 Intermediate"></a>1. 中间操作 Intermediate</h4>操作方法：map (mapToInt, flatMap 等)、 filter、 distinct、 sorted、 peek、 limit、 skip、 parallel、 sequential、 unordered</li>
+<li>数据在流水线过程中，所受到的所有操作都是“中间操作”</li>
+<li>输入输出的方式都是==流==对象，以此串连形成一个流水线<h4 id="2-终端操作-Terminal"><a href="#2-终端操作-Terminal" class="headerlink" title="2. 终端操作 Terminal"></a>2. 终端操作 Terminal</h4>操作方法：forEach、 forEachOrdered、 toArray、 reduce、 collect、 min、 max、 count、 anyMatch、 allMatch、 noneMatch、 findFirst、 findAny、 iterator</li>
+<li>执行完“中间操作”之后需要用“终端操作”将数据从流水线上拿下来<h3 id="获取流"><a href="#获取流" class="headerlink" title="获取流"></a>获取流</h3></li>
+</ul>
+<ol>
+<li>从Collection的实现类中获取流<code>Stream&lt;Student&gt; streamStd = list.stream();</code></li>
+<li>从数组中获取流<code>Stream&lt;Student&gt; streamStr = Arrays.stream(students);</code><h3 id="过滤器-filter"><a href="#过滤器-filter" class="headerlink" title="过滤器 filter"></a>过滤器 filter</h3></li>
+</ol>
+<ul>
+<li>使用的是<code>Predicate</code>函数式接口：<code>Stream&lt;T&gt; filter(Predicate&lt;? super T&gt; predicate);</code></li>
+<li>传入的参数为流中的基本元素对象，筛选出返回值为<code>true</code>的元素<h3 id="去重-distinct"><a href="#去重-distinct" class="headerlink" title="去重 distinct"></a>去重 distinct</h3></li>
+<li>去掉重复的结果，直接调用<code>list.stream().distinct()</code><h3 id="截取"><a href="#截取" class="headerlink" title="截取"></a>截取</h3></li>
+<li>截取流中的前n个元素<code>list.stream().limit(3)</code><h3 id="跳过"><a href="#跳过" class="headerlink" title="跳过"></a>跳过</h3></li>
+<li>跳过流的前n个元素<code>list.stream().skip(3)</code><h3 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h3></li>
+<li>流中元素的类型会发生变化，所以是将原来的对象映射为另一种对象<code>list.stream().map(Person::getName)</code><h3 id="合并流"><a href="#合并流" class="headerlink" title="合并流"></a>合并流</h3></li>
+<li>用<code>flagmap()</code>代替<code>map()</code><h2 id="ForkJoin"><a href="#ForkJoin" class="headerlink" title="ForkJoin"></a>ForkJoin</h2></li>
+</ul>
+<h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><h2 id="JMM"><a href="#JMM" class="headerlink" title="JMM"></a>JMM</h2><h2 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h2><ul>
+<li>虚拟机提供的轻量级的同步机制：<ol>
+<li>保证可见性</li>
+<li>不保证原子性</li>
+<li>禁止指令重排</li>
+</ol>
+</li>
+</ul>
+<h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/22/JavaSE/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JavaSE</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/28/hello-world/">
+                        <span class="hidden-mobile">About me</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "JUC并发编程&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

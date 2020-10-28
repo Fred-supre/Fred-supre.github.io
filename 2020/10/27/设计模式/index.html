@@ -1,0 +1,763 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/02.jpg">
+  <link rel="icon" type="image/png" href="/img/02.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Lluvia">
+  <meta name="keywords" content="">
+  <title>设计模式 - Lluvia</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Lluvia</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/17.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-27 21:27" pubdate>
+        2020年10月27日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      47
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">设计模式</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h1><ul>
+<li>针对面向对象的一种设计方式的总结，是对面向对象中的各种问题的解决办法的总结</li>
+<li>提供解决问题的一种抽象的描述、方案</li>
+<li>一共有23种设计模式，称为“ GoF 23 ”<br><img src="D:/Work/GitHub/blog/source/image_20201020161914.png" srcset="/img/loading.gif"></li>
+</ul>
+<h2 id="OOP七大原则"><a href="#OOP七大原则" class="headerlink" title="OOP七大原则"></a>OOP七大原则</h2><ul>
+<li>开闭原则：对扩展开放，对修改关闭</li>
+<li>里氏替换原则：继承必须保证超类所拥有的性质在子类中仍然成立</li>
+<li>依赖倒置原则：面向接口编程，不要面向实现编程</li>
+<li>单一职责原则：控制类的粒度大小，将对象解耦、提高内聚性</li>
+<li>接口隔离原则：要为各个类建立它们需要的专用接口</li>
+<li>迪米特法则：只与直接朋友交谈，不和陌生人说话</li>
+<li>合成复用原则：尽量先使用组合或者聚合等关联关系来实现，其次考虑使用继承关系来实现</li>
+</ul>
+<blockquote>
+<p>创建型模式</p>
+</blockquote>
+<h1 id="1-单例模式"><a href="#1-单例模式" class="headerlink" title="1. 单例模式"></a>1. 单例模式</h1><h3 id="饿汉式单例：类加载时就创建其对应的实例，但是这样会比较浪费内存空间"><a href="#饿汉式单例：类加载时就创建其对应的实例，但是这样会比较浪费内存空间" class="headerlink" title="饿汉式单例：类加载时就创建其对应的实例，但是这样会比较浪费内存空间"></a>饿汉式单例：类加载时就创建其对应的实例，但是这样会比较浪费内存空间</h3><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HungryMan</span> </span>&#123;  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> HungryMan HUNGRY_MAN = <span class="hljs-keyword">new</span> HungryMan();  
+  
+	<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">HungryMan</span><span class="hljs-params">()</span> </span>&#123;  
+	&#125;  
+  
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> HungryMan <span class="hljs-title">getInstance</span><span class="hljs-params">()</span> </span>&#123;  
+        <span class="hljs-keyword">return</span> HUNGRY_MAN;  
+  &#125;  
+&#125;</code></pre>
+
+<h3 id="懒汉式单例：只在用到这个单例的时候才实例化对象"><a href="#懒汉式单例：只在用到这个单例的时候才实例化对象" class="headerlink" title="懒汉式单例：只在用到这个单例的时候才实例化对象"></a>懒汉式单例：只在用到这个单例的时候才实例化对象</h3><pre><code class="hljs java"><span class="hljs-comment">//基本的想法是这样子的，在用到时进行实例化即可</span>
+<span class="hljs-comment">//但是这样的代码在多线程下是存在问题的，多线程下不能保证单例</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LazyMan</span> </span>&#123;  
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">LazyMan</span><span class="hljs-params">()</span> </span>&#123;
+    &#125;  
+  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> LazyMan lazyMan;  
+  
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> LazyMan <span class="hljs-title">getInstance</span><span class="hljs-params">()</span> </span>&#123;  
+	    <span class="hljs-keyword">if</span> (lazyMan == <span class="hljs-keyword">null</span>) &#123;  
+		    lazyMan = <span class="hljs-keyword">new</span> LazyMan();  
+		&#125;  
+		<span class="hljs-keyword">return</span> lazyMan;  
+	&#125;  
+&#125;
+
+<span class="hljs-comment">// 所以考虑使用加锁的方式来进行</span>
+<span class="hljs-comment">// 使用双重检测锁模式的 懒汉式单例 DCL懒汉式</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LazyMan</span> </span>&#123;  
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">LazyMan</span><span class="hljs-params">()</span> </span>&#123;  
+    &#125;  
+  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">volatile</span> LazyMan lazyMan;  <span class="hljs-comment">//注意这里使用的volatile关键字</span>
+  
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> LazyMan <span class="hljs-title">getInstance</span><span class="hljs-params">()</span> </span>&#123;  
+		<span class="hljs-keyword">if</span> (lazyMan == <span class="hljs-keyword">null</span>) &#123;  
+			<span class="hljs-keyword">synchronized</span> (LazyMan.class) &#123;  
+				<span class="hljs-keyword">if</span> (lazyMan == <span class="hljs-keyword">null</span>) &#123;  
+					lazyMan = <span class="hljs-keyword">new</span> LazyMan();  
+				&#125;  
+			&#125;  
+		&#125;  
+		<span class="hljs-keyword">return</span> lazyMan;  
+	&#125;  
+&#125;</code></pre>
+
+<ul>
+<li>这里使用的<code>volatile</code>关键字其实是出于安全的考虑来进行的</li>
+<li>问题来自于<code>new</code>一个新的对象这步操作并不是原子操作，这里其实发生了三部操作：<ol>
+<li>分配内存空间</li>
+<li>执行构造方法，初始化对象</li>
+<li>把对象引用指向这个空间</li>
+</ol>
+</li>
+<li>但是实际在执行时，很可能不是完全按照这个顺序来进行的，这就会导致引用已经指向了一块空间，但是这块空间很可能还没有完成初始化的操作，这就会导致另一个线程来调用时出现问题</li>
+<li>而这里的<code>volatile</code>关键字保证了 <strong>可见性</strong> 和 <strong>有序性</strong></li>
+</ul>
+<h3 id="通过内部类来创建（略）"><a href="#通过内部类来创建（略）" class="headerlink" title="通过内部类来创建（略）"></a>通过内部类来创建（略）</h3><h3 id="通过反射破坏单例"><a href="#通过反射破坏单例" class="headerlink" title="通过反射破坏单例"></a>通过反射破坏单例</h3><ul>
+<li>通过反射去获取到私有的构造器，然后创建新的实例</li>
+</ul>
+<pre><code class="hljs java">Constructor con = LazyMan.class.getDeclaredConstructor(<span class="hljs-keyword">null</span>);  
+LazyMan lazyMan1 = (LazyMan) con.newInstance();  
+LazyMan lazyMan2 = LazyMan.getInstance();</code></pre>
+
+<ul>
+<li>这种方式可以通过在构造器中设置检测来解决</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">LazyMan</span><span class="hljs-params">()</span> </span>&#123;  
+    <span class="hljs-keyword">synchronized</span> (LazyMan.class) &#123;  
+        <span class="hljs-keyword">if</span> (lazyMan != <span class="hljs-keyword">null</span>) &#123;  
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">&quot;不要试图通过反射破坏单例&quot;</span>);  
+		&#125;  
+    &#125;  
+&#125;</code></pre>
+
+<ul>
+<li>其实这样的办法依然是有问题的，不能永远的解决单例被反射破坏的问题</li>
+<li>现在标准的做法是通过枚举类型从本质上来解决（反射是不会对枚举类型起作用的，从<code>newInstance</code>的源码中可以看到不会反射枚举对象）</li>
+</ul>
+<h1 id="2-工厂模式"><a href="#2-工厂模式" class="headerlink" title="2. 工厂模式"></a>2. 工厂模式</h1><ul>
+<li>创建者和调用者分离</li>
+<li>详细分类：<ul>
+<li>简单工厂模式</li>
+<li>工厂方法模式</li>
+<li>抽象工厂模式</li>
+</ul>
+</li>
+<li>核心是：对象实例化不使用<code>new</code>，用工厂方法代替；使用工厂来进行对象创建的统一管理</li>
+</ul>
+<h2 id="简单工厂模式（静态工厂模式）"><a href="#简单工厂模式（静态工厂模式）" class="headerlink" title="简单工厂模式（静态工厂模式）"></a>简单工厂模式（静态工厂模式）</h2><ul>
+<li>将对象的创建委托给工厂，比较适用于需要传入很多参数的那种对象创建场景</li>
+<li>但是这种静态的工厂模式有一个问题，没有满足开闭原则；当需要对工厂进行扩展时，必须对工厂类的源码进行改变，而不能直接进行扩展。</li>
+<li>通过一个统一的工厂去生产所有的实例对象，工程中最常用的办法</li>
+</ul>
+<h2 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h2><ul>
+<li>定义统一的工厂的接口，针对每种产品都要编写对应的工厂实现</li>
+<li>这样就可以保证代码的开闭原则了，但是这样会是的使代码量和类的结构相当复杂，一般不推荐这么使用</li>
+</ul>
+<h1 id="3-抽象工厂模式"><a href="#3-抽象工厂模式" class="headerlink" title="3. 抽象工厂模式"></a>3. 抽象工厂模式</h1><ul>
+<li>抽象工厂模式提供一个创建一系列相关或者相互依赖对象的接口，无需指定它们具体的类</li>
+<li>围绕一个超级工厂创建其他工厂，该超级工厂又称为其他工厂的工厂</li>
+<li>首先定义要生产的产品的接口，一个产品可以有多个具体的产品实现（多个品牌的手机）；每个接口对应特定的一种产品（品牌旗下的不同的产品种类）</li>
+<li>然后定义抽象工厂的接口，在抽象工厂中定义对每种产品生产的接口</li>
+<li>然后由品牌商实现具体的工厂，并实现生产自己的各种产品</li>
+<li>在需求比较稳定的情况下是很强大的，可以增加产品簇，但是如果工厂的需求不稳定，接口的更改会导致很多类的更改</li>
+</ul>
+<h1 id="4-建造者模式"><a href="#4-建造者模式" class="headerlink" title="4. 建造者模式"></a>4. 建造者模式</h1><ul>
+<li>将一个复杂对象的构建与它的表示分离，在用户不知道对象的创建过程和细节的情况下就可以直接创建复杂的对象</li>
+<li>同样的构创建过程可以创建不同的表示</li>
+<li>隔离了复杂对象的创建与使用，其实就是对应了<strong>工人</strong>和<strong>指挥</strong>两者，分别去完成不同的功能</li>
+<li>和工厂模式相对比来说，工厂模式是通过直接调用工厂类来获取产品的；而建造者模式中，客户不直接调用建造者的方法，而是通过一个指挥类，来指导如何生成对象。它更倾向于一步步构造一个复杂对象，返回一个完整的对象</li>
+</ul>
+<h3 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h3><ul>
+<li>首先整个模型由四个部分组成：核心的产品、构建的统一接口、构建的具体实现工人、工人的指挥者</li>
+</ul>
+<ol>
+<li>产品 ( Product ) 所代表的是需要我们构建的东西，要去生产的一个物品，这个物品的生产往往需要大量的步骤来完成</li>
+<li>构建的统一接口 ( Builder ) 是我们人为定义的，要完成这个产品的构建所需要的大概步骤、要完成的工作概括；还要保证有一个返回构建好的产品的方法</li>
+<li>然后需要一个工人 ( Worker ) 来具体实现<strong>构建接口</strong>中所定义的具体工作任务；在工人的构造器中去<code>new</code>一个产品的对象出来，然后实现接口定义的对产品的构建工作，最后完成产品的返回方法</li>
+<li>最后是指挥者 ( Director ) 按照需要的顺序来调用工人，完成对产品的构建工作，最后获取到这个产品。（这里有一个注意点，其实指挥者是不直接调用工人的，而是调用的Builder接口，然后使用了多态的特性可以传入不同的工人）</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h3><ul>
+<li>这个模式对于某一个具体产品的构建，只要完成构建需要做的工作大概是相同的，就可以通过统一的Builder接口定义要完成的工作量</li>
+<li>然后由工人实现具体的步骤，工人是可以实现多个的，通过多态的方式定义多个工人完成差异化的工作</li>
+<li>最后指挥者来调度工人工作的步骤，当然指挥者的角色可以由调用程序来承担</li>
+</ul>
+<h1 id="5-原型模式"><a href="#5-原型模式" class="headerlink" title="5. 原型模式"></a>5. 原型模式</h1><ul>
+<li>以某个对象为原型，创建一个新的对象，也就是copy一份 (<code>Cloneable</code>接口，<code>clone()</code>方法)</li>
+<li>这里的克隆是通过native方法调用底层来实现的，直接在内存的层面上来进行的拷贝，效率非常高</li>
+<li>一般 原型模式 会和 工厂模式 结合起来使用，工厂在创建新对象的时候不再采用<code>new</code>关键字去创建新对象，而是采用<code>clone()</code>方法来产生新的对象，来达到更高的效率</li>
+</ul>
+<h3 id="实现："><a href="#实现：" class="headerlink" title="实现："></a>实现：</h3><ul>
+<li>需要通过原型模式来拷贝的类，需要继承一个<code>Cloneable</code>接口，并且重写<code>clone()</code>方法；然后对某一个对象调用这个方法就可以创建并返回其副本了</li>
+</ul>
+<h3 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h3><ul>
+<li>直接这样调用<code>clone()</code>方法完成的拷贝都是==浅克隆==，即当这个对象的实例变量中存在引用时，那么直接拷贝出来的对象和原对象中的这些引用都是指向同一个对象的。这显然不是我们希望的结果</li>
+<li>我们需要完成==深克隆==，其中一个比较简单的办法是在<code>clone()</code>方法中将每个引用对象再clone一遍</li>
+<li>除此之外还可以通过序列化和反序列化来实现，不过这个会涉及到IO的操作，效率不会特别高</li>
+</ul>
+<blockquote>
+<p>结构型模式  这类模式是为了实现代码的松耦合的</p>
+</blockquote>
+<h1 id="6-适配器模式"><a href="#6-适配器模式" class="headerlink" title="6. 适配器模式"></a>6. 适配器模式</h1><ul>
+<li>相当于电脑的拓展坞的功能，当功能模块提供的接口与使用者之间不统一的时候，就需要一个中间的适配器来连接两者</li>
+<li>适配器在实现时有继承和组合两种方式，分别对应了类适配器和对象适配器两种</li>
+</ul>
+<h3 id="实现：-1"><a href="#实现：-1" class="headerlink" title="实现："></a>实现：</h3><ul>
+<li>首先要定义适配器完成的功能的接口，直接对调用者传入这个接口类型的对象</li>
+<li>然后通过一个适配器的具体实现类，完成需要的功能；这个适配器的实例需要直接传入调用者对象，完成功能的调用</li>
+<li>在实现适配器的时候，我们更多选择<strong>组合模式</strong>；也就是在适配器实例中定义提供功能的模块的引用的实例变量，然后在适配器的构造器中定义传入这个功能模块的实例</li>
+<li>这样，被适配对象的功能模块的实例 =传入=&gt; 适配器， 适配器实例 =传入=&gt; 调用模块</li>
+</ul>
+<h1 id="7-桥接模式"><a href="#7-桥接模式" class="headerlink" title="7. 桥接模式"></a>7. 桥接模式</h1><ul>
+<li>将抽象部分与实现部分分离，又称 柄体模式 或 接口模式</li>
+<li>适合处理多维度变化的场景，当一个类存在两个独立变化的维度，而且这两个维度都需要就行扩展时，桥接模式就可以大大降低代码的数量<br><img src="D:/Work/GitHub/blog/source/设计模式_md_files/image_20201021221500.png" srcset="/img/loading.gif"></li>
+</ul>
+<h3 id="实现：-2"><a href="#实现：-2" class="headerlink" title="实现："></a>实现：</h3><ul>
+<li>以上面的这个二位图为例子，将一个产品分成了品牌和类型两个维度</li>
+</ul>
+<ol>
+<li>首先定义品牌的接口，定义和品牌相关的相关操作</li>
+<li>然后，创建具体产品的抽象类；在这个抽象类中要通过组合的方式，将具体的品牌实例传入其中，并定义产品的相关操作</li>
+<li>最后，需要具体实现品牌和产品，我们在将产品实例化的时候需要传入其品牌对应的实例，这样通过组合的方式得到了一个具体的产品</li>
+</ol>
+<h1 id="8-代理模式"><a href="#8-代理模式" class="headerlink" title="8. 代理模式"></a>8. 代理模式</h1><ul>
+<li>代理模式是Spring AOP的底层实现</li>
+</ul>
+<h2 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h2><ul>
+<li>静态代理是通过一个中介对象去代理原来的真实对象完成相关的操作；但不是简单的将已经具备的功能重复实现一遍，而是要对原来真实对象提供的功能做一定的扩展，这里的扩展包括了已经具备的方法的扩展和还没有的方法的扩展两种</li>
+<li>那么客户在调用对象的时候就不再调用原来的真实对象，而是通过中间人代理的方式调用，这样的方式可以获得更多的功能</li>
+<li>这样的代理方式具有很强的扩展性，对于以前的代码的功能扩展是非常好的解决办法，避免了源码的大量改动</li>
+<li>但是，显然这样的方式需要针对每个真实的对象去实现一个代理对象，这会导致源码的数量翻倍；为了避免这样的情况，就需要动态代理的方式，通过一个代理类去代理多个不同的真实对象</li>
+</ul>
+<h2 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h2><ul>
+<li>核心是通过反射来实现</li>
+<li>动态代理的代理类是动态生成的，而静态代理就需要我们自己手动写代理类 </li>
+<li>动态代理的分类：<ul>
+<li>基于接口：JDK原生的方式实现<ul>
+<li>Java字节码实现：JAVAssist (现在最常用的方式)</li>
+</ul>
+</li>
+<li>基于类：GCLIB的实现</li>
+</ul>
+</li>
+</ul>
+<h3 id="实现：-3"><a href="#实现：-3" class="headerlink" title="实现："></a>实现：</h3><ul>
+<li>需要了解两个类：<code>Proxy</code>（代理）、<code>InvocationHandler</code>（调用处理程序）</li>
+<li>首先需要定义一个继承<code>InvocationHandler</code>接口的代理实现类，继承这个接口之后必须要实现一个<code>Object invoke(Object proxy, Method method, Object[] args)</code>方法，这个方法就是最后通过代理对象调用被代理对象时，会代理调用的方法，我们可以在这个方法里面定义我们需要附件的各种操作</li>
+<li>在这个<code>invoke</code>方法中，我们一般需要保证原方法正常执行，所以需要通过反射的方式调用一下原方法<code>method.invoke(target,args);</code>；当然也可能不执行原方法了，替换为别的业务逻辑代码</li>
+<li>然后，我们需要去获取到一个JVM自动生成的代理类，通过<code>Proxy</code>类提供的静态方法就可以获取了：<code>public static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces, InvocationHandler h)</code>；需要注意的是，这里传入的参数，加载器我们就选择被代理对象的加载器，接口则必然是被代理对象实现的接口了（这里其实也预示着，所有被代理的方法都是那些接口中定义过的方法，被代理对象自己定义的方法是不会被代理的，那么代理对象也就没有办法调用到那些方法），最后的这个<code>InvocationHandler</code>参数其实代表了选择哪个代理的实现，即调用哪个具体实现的<code>invoke</code>方法来进行代理</li>
+<li>上一条中提到的关于接口的那个问题，其实在调用这个静态方法自动生成动态代理类的时候是只能将其类型强制转换为接口类型的，那么这也就表示着很多功能会有所限制（好好理解）</li>
+<li>总的来说，动态代理使用了两次反射来完成这个工作，动态代理类是<strong>自动生成</strong>的，而静态代理则是手动书写的</li>
+</ul>
+<h3 id="最后给出一个动态代理的模板"><a href="#最后给出一个动态代理的模板" class="headerlink" title="最后给出一个动态代理的模板"></a>最后给出一个动态代理的模板</h3><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProxyInvocationHandler</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">InvocationHandler</span> </span>&#123;  
+  
+	<span class="hljs-comment">//被代理的接口  </span>
+	<span class="hljs-keyword">private</span> Object target;  
+	
+	<span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">bind</span><span class="hljs-params">(Object target)</span> </span>&#123;  
+		<span class="hljs-keyword">this</span>.target = target;
+		<span class="hljs-keyword">return</span> target;
+	&#125;  
+  
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">getProxy</span><span class="hljs-params">()</span> </span>&#123;  
+        <span class="hljs-keyword">return</span> Proxy.newProxyInstance(target.getClass().getClassLoader(),  
+				target.getClass().getInterfaces(), <span class="hljs-keyword">this</span>);  
+	&#125;  
+  
+    <span class="hljs-meta">@Override</span>  
+	<span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">invoke</span><span class="hljs-params">(Object proxy, Method method, Object[] args)</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;  
+        Object res = method.invoke(target,args);   
+		<span class="hljs-keyword">return</span> res;  
+	&#125; 
+&#125;</code></pre>
+
+
+<h1 id="9-享元模式"><a href="#9-享元模式" class="headerlink" title="9. 享元模式"></a>9. 享元模式</h1><ul>
+<li>主要用于减少创建对象的数量，以减少内存占用和提高性能</li>
+<li><code>String</code>的常量池技术就是采用享元模式设计的，通过共用相同的对象来减少大量的细粒度的对象对堆内存空间的消耗</li>
+</ul>
+<blockquote>
+<p>行为型模式</p>
+</blockquote>
+<h1 id="迭代器模式"><a href="#迭代器模式" class="headerlink" title="迭代器模式"></a>迭代器模式</h1><ul>
+<li>源于Java提供的一项语法糖 <code>for(String str : list)</code></li>
+<li>使用这样简洁的表达方式就可以表达遍历<code>list</code>列表中的每一个对象，但是这是通过语法糖实现的，最终通过<code>javac</code>编译时，会还原成<code>Iterator</code>的表达方式</li>
+<li>上面的这条语句反编译后的结果是</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-keyword">for</span>(Iterator iterator = list.iterator(); iterator.hasNext();)  
+&#123;  
+    String i = (String)iterator.next();  
+&#125;</code></pre>
+
+<ul>
+<li>所以<code>for-each</code>句型其实Java的语法糖，本质都是通过迭代器来实现的</li>
+<li>迭代器模式的实现需要通过两个接口<code>Iterator</code> 和 <code>Iterable</code> </li>
+</ul>
+<h3 id="实现：-4"><a href="#实现：-4" class="headerlink" title="实现："></a>实现：</h3><ul>
+<li>需要迭代的对象要实现<code>Iterable</code> 接口中的<code>Iterator&lt;T&gt; iterator()</code>方法</li>
+<li>显然这里要返回的是一个<code>Iterator</code>接口的对象，而这个对象是需要实现<code>hasNext() &amp; next()</code>方法的</li>
+<li>所以我们其实还需要在这个类的内部在定义一个<code>private</code>的<code>Iterator</code>实现类，然后在<code>Iterator&lt;T&gt; iterator()</code>方法返回的时候<code>new</code>一个这个内部类的实例</li>
+<li>我们之所以不直接对要迭代的类实现<code>Iterator</code>接口，是因为这样我们就只能定义一种迭代的方式，但是通过返回<code>Iterator</code>实例的方式就可以在内部多定义几种迭代的方式，根据需要返回迭代的实例，进行不同类型的迭代</li>
+</ul>
+<h3 id="给出一个迭代实现的例子"><a href="#给出一个迭代实现的例子" class="headerlink" title="给出一个迭代实现的例子"></a>给出一个迭代实现的例子</h3><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Iterable</span>&lt;<span class="hljs-title">String</span>&gt; </span>&#123;  
+  
+	<span class="hljs-keyword">int</span> length;  
+	String[] name;  
+  
+	<span class="hljs-meta">@Override</span>  
+	<span class="hljs-function"><span class="hljs-keyword">public</span> Iterator&lt;String&gt; <span class="hljs-title">iterator</span><span class="hljs-params">()</span> </span>&#123;  
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Itr();  
+	&#125;  
+  
+    <span class="hljs-keyword">private</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Itr</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Iterator</span>&lt;<span class="hljs-title">String</span>&gt; </span>&#123;  
+		<span class="hljs-keyword">int</span> ptr;  
+  
+		<span class="hljs-meta">@Override</span>  
+		<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">hasNext</span><span class="hljs-params">()</span> </span>&#123;  
+			<span class="hljs-keyword">return</span> ptr &lt; length;  
+		&#125;  
+  
+        <span class="hljs-meta">@Override</span>  
+		<span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">next</span><span class="hljs-params">()</span> </span>&#123;  
+            <span class="hljs-keyword">return</span> name[ptr++];  
+		&#125;  
+    &#125;  
+&#125;</code></pre>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/25/JVM/">
+                        <span class="hidden-mobile">JVM</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "设计模式&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
